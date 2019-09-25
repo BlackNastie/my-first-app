@@ -6,10 +6,15 @@
 </ng-template>
 <hr/>
 
-<app-car *ngFor="let car of cars"></app-car>
+<!--<app-car *ngFor="let car of cars"></app-car>-->
 
 <ul>
-  <li *ngFor="let item of items; let idx = index">
-    <b>{{idx + 1}}</b> - <i>{{item.name}}</i>
+  <li *ngFor="let car of cars; let idx = index">
+    <div
+      [ngStyle]="{backgroundColor: (idx+  1) % 2 === 0 ? 'red' : 'blue', 'color' : 'white'}"
+      [ngClass]="{'big-text': setBigCarText(car)}"
+    >
+      <b>{{idx + 1}}</b> - {{car}}
+    </div>
   </li>
 </ul>
