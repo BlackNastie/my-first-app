@@ -1,5 +1,10 @@
 import { Component} from '@angular/core';
 
+interface Car {
+  name: string;
+  year: number;
+}
+
 @Component({
   selector: 'app-cars',
   templateUrl: './cars.component.html',
@@ -8,18 +13,37 @@ import { Component} from '@angular/core';
 export class CarsComponent {
   //addCarStatus = '';
   carName = '';
-  addCarStatus= false;
-  cars = ['ford','bmw','audi'];
-  items = [{id:3, name: 'item 1'},{id:6, name: 'item 2'},{id:9, name: 'item 3'}];
+  carYear = 2017;
+  addCarStatus = false;
+  cars: Car[] = [{
+    name: 'ford',
+    year: 2007
+  }, {
+    name: 'bmw',
+    year: 2011
+  }, {
+    name: 'audi',
+    year: 2009
+  }, {
+    name: 'mazda',
+    year: 2013
+  }, {
+    name: 'bentley',
+    year: 2015
+  }];
 
   constructor() {
 
   }
 
   addCar() {
-    this.addCarStatus = true;
-    this.cars.push(this.carName);
+
+    this.cars.push({
+      name: this.carName,
+      year: this.carYear
+    });
     this.carName = '';
+    this.carYear = 2017;
   }
 
 
