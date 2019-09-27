@@ -3,23 +3,11 @@ import {Component, Input} from '@angular/core';
 @Component({
   selector: 'app-car',
   templateUrl: './car.component.html',
-  // template: `
-  //   <h2>Single Car</h2>
-  //   <p>sgmkdfmhdf jgjfjg</p>
-  // `,
-  //styleUrls: ['./car.component.css']
-  styles: [`
-    h2 {
-      color: aqua;
-    }
-  `]
+  styleUrls: ['./car.component.css']
 })
-export class CarComponent {
-  carName = 'Ford';
-  carYear = 2017;
-  @Input() carItem: {name: string, year: number};
 
-  getName() {
-    return this.carName;
-  }
+export class CarComponent {
+  @Input('carItem') car: {name: string, year: number};
+
+  private carItem = false;
 }

@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 
 interface Car {
   name: string;
@@ -12,9 +12,7 @@ interface Car {
 })
 export class CarsComponent {
   //addCarStatus = '';
-  carName = '';
-  carYear = 2017;
-  addCarStatus = false;
+
   cars: Car[] = [{
     name: 'ford',
     year: 2007
@@ -36,15 +34,9 @@ export class CarsComponent {
 
   }
 
-  addCar() {
-
-    this.cars.push({
-      name: this.carName,
-      year: this.carYear
-    });
-    this.carName = '';
-    this.carYear = 2017;
+  updateCarList(car: {
+    name: string, year: number
+  }) {
+    this.cars.push(car);
   }
-
-
 }
