@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { CarService } from "./car.service";
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  providers: [CarService]
+  templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
 
-  cars = [];
-  constructor(private service: CarService) {}
+  answers = [{
+    type: 'yes',
+    text: 'Да'
+  }, {
+    type: 'no',
+    text: 'Нет'
+  }];
 
-  ngOnInit(): void {
-    this.cars = this.service.cars;
-  }
+  defaultAnswer = 'no';
+  defaultCountry = 'ru';
 
-  addCarToList(carName: string) {
-    this.service.addCar(carName);
+  submitForm(form: NgForm) {
+    console.log("Submitted", form);
   }
 }

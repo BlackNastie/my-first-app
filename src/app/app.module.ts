@@ -4,22 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule} from "@angular/common/http";
 
 import { AppComponent } from './app.component';
-import { CarComponent } from './car/car.component';
-import { CarAddComponent } from './car-add/car-add.component';
-import {ConsoleService} from "./console.service";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CarComponent,
-    CarAddComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule
   ],
-  providers: [ConsoleService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
