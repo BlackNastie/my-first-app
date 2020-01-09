@@ -1,39 +1,26 @@
 <div class="col-xs-8 col-xs-offset-2">
-    <form (ngSubmit)="submitForm(form)" #form="ngForm">
-        <div ngModelGroup="user" #user="ngModelGroup">
-            <div class="form-group" [ngClass]="email.touched && email.invalid ? 'has-error' : null">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group" >
                 <label>Email</label>
                 <input
                     type="text"
                     class="form-control"
-                    ngModel
-                    name="email"
-                    required
-                    email
-                    #email="ngModel"
+                    formControlName="email"
                 >
-                <p *ngIf="email.touched && email.invalid">Please input correct email!</p>
             </div>
-            <div class="form-group" [ngClass]="pass.touched && pass.invalid ? 'has-error' : null">
+            <div class="form-group" >
                 <label>Пароль</label>
                 <input
                     type="password"
                     class="form-control"
-                    ngModel required
-                    name="pass"
-                    #pass="ngModel"
+                    formControlName="pass"
                 >
-                <p *ngIf="pass.touched && pass.invalid">Please input correct password!</p>
             </div>
-            <p *ngIf="user.touched && user.invalid">User data are incorrect!</p>
-        </div>
+
         <div class="form-group">
             <label>Выберите страну</label>
             <select
-                class="form-control"
-                [ngModel]="defaultCountry"
-                name="country"
-                required
+                class="form-control" formControlName="country"
             >
                 <option value="ru">Россия</option>
                 <option value="by">Белоруссия</option>
@@ -44,10 +31,10 @@
             <label>
                 <input
                     type="radio"
+                    name="answer"
+                    formControlName="answer"
                     [value]="ans.type"
-                    [ngModel]="defaultAnswer"
-                    required
-                    name="answer">
+                    >
                 {{ans.text}}
             </label>
         </div>
@@ -55,6 +42,5 @@
                 type="submit"
                 [disabled]="!form.valid"
         >Сохранить</button>
-
     </form>
 </div>

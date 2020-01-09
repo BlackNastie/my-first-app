@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
 
   answers = [{
     type: 'yes',
@@ -15,10 +16,18 @@ export class AppComponent {
     text: 'Нет'
   }];
 
-  defaultAnswer = 'no';
-  defaultCountry = 'ru';
+  form: FormGroup;
 
-  submitForm(form: NgForm) {
-    console.log("Submitted", form);
+  ngOnInit() {
+    this.form = new FormGroup({
+      email: new FormControl('' ),
+      pass: new FormControl('' ),
+      country: new FormControl('ru' ),
+      answer: new FormControl('no' )
+    });
+  }
+
+  onSubmit() {
+    console.log('Submitted!', this.form);
   }
 }
