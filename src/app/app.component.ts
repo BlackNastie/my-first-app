@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validator, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +16,17 @@ export class AppComponent implements OnInit {
     text: 'Нет'
   }];
 
+  charsCount = 5;
+
   form: FormGroup;
+
 
   ngOnInit() {
     this.form = new FormGroup({
-      email: new FormControl('' ),
-      pass: new FormControl('' ),
+      user: new FormGroup({
+        email: new FormControl('', [Validators.required, Validators.email] ),
+        pass: new FormControl('', [Validators.required, this.checkForLength.bind(this)]),
+      }),
       country: new FormControl('ru' ),
       answer: new FormControl('no' )
     });
@@ -29,5 +34,15 @@ export class AppComponent implements OnInit {
 
   onSubmit() {
     console.log('Submitted!', this.form);
+  }
+
+  checkForLength(control: FormControl) {
+    if (control.value.length <= this.charsCount) {
+      return {
+        'lengthError' : true
+      }
+    }
+
+    return null;
   }
 }
