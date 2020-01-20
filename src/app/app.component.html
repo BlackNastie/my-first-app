@@ -8,7 +8,10 @@
                     class="form-control"
                     formControlName="email"
                 >
-                <p *ngIf="form.get('user.email').invalid && form.get('user.email').touched">Email error!</p>
+                <p *ngIf="form.get('user.email').invalid && form.get('user.email').touched">
+                    <span>Email error!</span>
+                    <span *ngIf="form.get('user.email').errors['emailIsUsed']">Email has been used!</span>
+                </p>
             </div>
             <div class="form-group" [ngClass]="form.get('user.pass').invalid && form.get('user.pass').touched ? 'has-error' : ''" >
                 <label>Пароль</label>
