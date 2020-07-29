@@ -1,0 +1,32 @@
+.news-list {
+  .news-item {
+    border: 1px solid black;
+    display: block;
+    margin: 20px;
+    padding: 1em;
+    min-height: 290px;
+    &__title {
+      color: #8d2c62;
+      font-weight: bold;
+      margin-bottom: 10px;
+      input {
+        width: 280px;
+      }
+    }
+    &__img {
+      width: 180px;
+      float: left;
+      margin-right: 2em;
+    }
+    &__description {
+      ckeditor {
+        width: 400px;
+        height: 170px;
+      }
+    }
+    button {
+      float: right;
+      margin-top: 20px;
+    }
+  }
+}

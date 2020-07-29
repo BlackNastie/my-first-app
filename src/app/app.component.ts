@@ -1,62 +1,81 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validator, Validators} from '@angular/forms';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { map, takeUntil } from "rxjs/operators";
+import { AutoUnsubscribeService } from "./services/auto-unsubscribe.service";
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent } from "@ckeditor/ckeditor5-angular";
+import { DatePipe } from "@angular/common";
+// import './zone-flags';
+// import 'zone.js/dist/zone';
 
+// @ts-ignore
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  providers: [AutoUnsubscribeService]
 })
 export class AppComponent implements OnInit {
 
+  public Editor = ClassicEditor;
 
-  answers = [{
-    type: 'yes',
-    text: 'Да'
-  }, {
-    type: 'no',
-    text: 'Нет'
-  }];
+  constructor(
+      public datepipe: DatePipe,
+      private httpClient: HttpClient,
+      private destroy: AutoUnsubscribeService
+  ) {  }
 
-  charsCount = 5;
+  posts = [];
+  retrieveddata: string = null;
 
-  form: FormGroup;
+  //@ViewChild( 'editor', {static: false} ) editorComponent: CKEditorComponent;
 
 
   ngOnInit() {
-    this.form = new FormGroup({
-      user: new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.email], this.checkForEmail ),
-        pass: new FormControl('', [Validators.required, this.checkForLength.bind(this)]),
-      }),
-      country: new FormControl('ru' ),
-      answer: new FormControl('no' )
-    });
+    this.getArticles();
+    console.log('posts',this.posts);
   }
 
-  onSubmit() {
-    console.log('Submitted!', this.form);
+  getArticles() {
+    // @ts-ignore
+    this.httpClient.get('/lenta/posts')
+        .pipe(
+            map((res: any) => res.posts.map(
+                post => ({...post, title: 'Новость от ' + this.datepipe.transform(post.createdAt, 'yyyy-MM-dd')})
+            )),
+            takeUntil(this.destroy)
+        )
+        .subscribe(posts => {
+          console.log('test', posts)
+          this.posts = [...posts];
+          //console.log('posts',this.posts);
+        });
   }
 
-  checkForLength(control: FormControl) {
-    if (control.value.length <= this.charsCount) {
-      return {
-        'lengthError' : true
-      }
-    }
+  editNew(index: number) {
+    if (!this.posts[index].editable) {
+      this.posts[index].editable = true;
+    } else this.posts[index].editable = false
 
-    return null;
   }
 
-  checkForEmail(control: FormControl) : Promise<any> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (control.value === 'test@mail.ru') {
-          resolve ({
-            'emailIsUsed': true
-          });
-        } else {
-          resolve(null);
-        }
-      }, 3000);
-    })
+  submit(index: number) {
+    let post = this.posts[index];
+
+    console.log("post title", post.title);
+    post.text = this.retrieveddata;
+    post.editable = false;
+    console.log( this.retrieveddata );
   }
+
+  public onChange({ editor }: ChangeEvent) {
+    this.retrieveddata = editor.getData();
+  }
+
+  public onKeyUp(event: Event, index: number) {
+    //console.log("onKeyUp", event);
+    this.posts[index].title = (<HTMLInputElement>event.target).value;
+  }
+
+
 }

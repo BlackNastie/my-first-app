@@ -1,55 +1,42 @@
-<div class="col-xs-8 col-xs-offset-2">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div formGroupName="user">
-            <div class="form-group" [ngClass]="form.get('user.email').invalid && form.get('user.email').touched ? 'has-error' : ''" >
-                <label>Email</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    formControlName="email"
-                >
-                <p *ngIf="form.get('user.email').invalid && form.get('user.email').touched">
-                    <span>Email error!</span>
-                    <span *ngIf="form.get('user.email').errors['emailIsUsed']">Email has been used!</span>
-                </p>
+<header></header>
+
+<section>
+    <div class="col-xs-8 col-xs-offset-2 news-list">
+
+        <ng-template ngFor let-item [ngForOf]="posts" let-i="index" >
+
+            <div *ngIf="i < 5" class="news-item">
+<!--                <form [formGroup]="form" class="ui-fieldset" role="form" autocomplete="off" (ngSubmit)="submit(i)">-->
+                    <div class="news-item__img">
+                        <img src="assets/img/lentach_logo.jpg"/>
+                    </div>
+                    <div class="news-list__content">
+                        <div class="news-item__title">
+                            <input *ngIf="item.editable; else elseBlockTitle" name="title"
+                                   type="text" value="{{item.title}}"
+                                   (keyup)="onKeyUp($event, i)"
+                            >
+                            <ng-template #elseBlockTitle><span (click)="editNew(i)">{{item.title}}</span></ng-template>
+                        </div>
+                        <div class="news-item__description">
+    <!--                        <textarea *ngIf="item.editable; else elseBlock">-->
+    <!--                        </textarea>-->
+                            <ckeditor [editor]="Editor" data="{{ item.text }}" *ngIf="item.editable; else elseBlock" (change)="onChange($event)"></ckeditor>
+                            <ng-template #elseBlock>
+                                <div [innerHTML]="item.text"></div>
+                            </ng-template>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary submit" *ngIf="item.editable" (click)="submit(i)">
+                            Сохранить
+                        </button>
+                    </div>
+<!--                </form>-->
             </div>
-            <div class="form-group" [ngClass]="form.get('user.pass').invalid && form.get('user.pass').touched ? 'has-error' : ''" >
-                <label>Пароль</label>
-                <input
-                    type="password"
-                    class="form-control"
-                    formControlName="pass"
-                >
-                <p *ngIf="form.get('user.pass').invalid && form.get('user.pass').touched">
-                    <span *ngIf="form.get('user.pass').errors['required']">Password should not been empty!</span>
-                    <span *ngIf="form.get('user.pass').errors['lengthError']">Password length too short {{charsCount}}!</span>
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Выберите страну</label>
-            <select
-                class="form-control" formControlName="country"
-            >
-                <option value="ru">Россия</option>
-                <option value="by">Белоруссия</option>
-                <option value="ua">Украина</option>
-            </select>
-        </div>
-        <div class="radio" *ngFor="let ans of answers">
-            <label>
-                <input
-                    type="radio"
-                    name="answer"
-                    formControlName="answer"
-                    [value]="ans.type"
-                    >
-                {{ans.text}}
-            </label>
-        </div>
-        <button class="btn btn-success"
-                type="submit"
-                [disabled]="form.invalid"
-        >Сохранить</button>
-    </form>
-</div>
+        </ng-template>
+    </div>
+</section>
+
+<footer>
+
+</footer>
